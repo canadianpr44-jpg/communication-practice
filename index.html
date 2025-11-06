@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Enhanced Communication Practice System</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 15px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 25px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 15px;
+        }
+        
+        .header h1 { color: #333; font-size: 26px; margin-bottom: 8px; }
+        .header p { color: #666; font-size: 15px; }
+        
+        .version-badge {
+            display: inline-block;
+            background: #51cf66;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+        
+        .stats-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-number { font-size: 28px; font-weight: bold; margin-bottom: 5px; }
+        .stat-label { font-size: 12px; opacity: 0.9; }
+        
+        .tab-navigation {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #e9ecef;
+            flex-wrap: wrap;
+            overflow-x: auto;
+        }
+        
+        .tab-btn {
+            padding: 12px 20px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .tab-btn:hover { color: #667eea; background: #f8f9fa; }
+        .tab-btn.active { color: #667eea; border-bottom-color: #667eea; }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .info-box {
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .info-box-blue {
+            background: #e7f5ff;
+            border-left: 4px solid #339af0;
+            color: #1864ab;
+        }
+        
+        .info-box-green {
+            background: #d3f9d8;
+            border-left: 4px solid #51cf66;
+            color: #2b8a3e;
+        }
+        
+        .info-box-yellow {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            color: #856404;
+        }
+        
+        button {
+            padding: 10px 20px;
+            font-size: 14px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        
+        .btn-primary { background: #667eea; color: white; }
+        .btn-primary:hover { background: #5568d3; }
+        .btn-success { background: #51cf66; color: white; }
+        .btn-success:hover { background: #40c057; }
+        .btn-danger { background: #ff6b6b; color: white; }
+        .btn-danger:hover { background: #fa5252; }
+        .btn-small { padding: 6px 12px; font-size: 12px; }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .module-selector {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .module-selector label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .module-selector select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .text-display {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            min-height: 160px;
+            font-size: 20px;
+            line-height: 1.9;
+            color: #333;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+        }
+        
+        .pronunciation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .pronunciation-card {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .pronunciation-word {
+            font-size: 22px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .pronunciation-tip {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        
+        .authoring-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .authoring-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        .form-group { margin-bottom: 20px; }
+        
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+        
+        .form-textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
+            resize: vertical;
+        }
+        
+        .segment-preview {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .segment-item {
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            border-radius: 8px;
+        }
+        
+        .segment-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .word-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .word-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: #e7f5ff;
+            border: 2px solid #339af0;
+            border-radius: 20px;
+            font-size: 13px;
+            color: #1864ab;
+            cursor: pointer;
+        }
+        
+        .word-chip.selected {
+            background: #51cf66;
+            border-color: #51cf66;
+            color: white;
+        }
+        
+        .success-message {
+            padding: 15px;
+            background: #d3f9d8;
+            border-left: 4px solid #51cf66;
+            border-radius: 8px;
+            color: #2b8a3e;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .success-message.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .daily-recommendations {
+            background: linear-gradient(135deg, #51cf66 0%, #40c057 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .recommendation-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+        
+        .recommendation-list li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .recommendation-list li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+        
+        .audio-recording-section {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .audio-controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .recording-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            background: #dc3545;
+            color: white;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .recording-indicator .pulse {
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Complete Enhanced Communication Practice System</h1>
+            <p>Integrated Practice with Custom Content Authoring</p>
+            <span class="version-badge">✨ Complete v5.0 - All Features Unified</span>
+        </div>
+        
+        <div class="stats-dashboard">
+            <div class="stat-card">
+                <div class="stat-number" id="totalModules">1</div>
+                <div class="stat-label">Content Modules</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalWords">12</div>
+                <div class="stat-label">Practice Words</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalSessions">0</div>
+                <div class="stat-label">Practice Sessions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalMinutes">0</div>
+                <div class="stat-label">Total Minutes</div>
+            </div>
+        </div>
+        
+        <div class="tab-navigation">
+            <button class="tab-btn active" data-tab="today">🌟 Today's Practice</button>
+            <button class="tab-btn" data-tab="shadowing">📖 Shadowing</button>
+            <button class="tab-btn" data-tab="pronunciation">🗣️ Pronunciation</button>
+            <button class="tab-btn" data-tab="vocabulary">📚 Vocabulary</button>
+            <button class="tab-btn" data-tab="generation">💡 Generation</button>
+            <button class="tab-btn" data-tab="author">✏️ Create Content</button>
+            <button class="tab-btn" data-tab="progress">📊 Progress</button>
+            <button class="tab-btn" data-tab="guide">📅 Weekly Guide</button>
+        </div>
+        
+        <!-- Today's Practice Tab -->
+        <div class="tab-content active" id="today">
+            <div class="info-box info-box-green">
+                <strong>🌟 Welcome to Your Daily Practice Session</strong><br>
+                Based on your progress and content library, here's what you should focus on today for maximum improvement.
+            </div>
+            
+            <div class="daily-recommendations">
+                <h3>📋 Today's Recommended Focus Areas:</h3>
+                <ul class="recommendation-list" id="dailyRecommendations">
+                    <li>Start with pronunciation drill for vocabulary activation</li>
+                    <li>Continue shadowing practice from where you left off</li>
+                    <li>Review vocabulary terms that need reinforcement</li>
+                    <li>Practice generation with a scenario</li>
+                </ul>
+            </div>
+            
+            <div class="info-box info-box-blue">
+                <h4 style="margin-bottom: 10px;">💡 Quick Start Guide:</h4>
+                <p style="margin-bottom: 8px;"><strong>New to the system?</strong> Start with the Pronunciation tab to drill key words, then move to Shadowing to practice complete sentences. Use Create Content to add your own professional material.</p>
+                <p><strong>Returning user?</strong> Check the recommendations above and start with whatever items are highlighted as needing attention today.</p>
+            </div>
+        </div>
+        
+        <!-- Shadowing Practice Tab -->
+        <div class="tab-content" id="shadowing">
+            <div class="info-box info-box-blue">
+                <strong>📖 Shadowing Practice</strong><br>
+                Listen to each segment and immediately repeat what you hear. Record yourself to compare with the model audio.
+            </div>
+            
+            <div class="module-selector">
+                <label for="shadowModuleSelect">Select Practice Module:</label>
+                <select id="shadowModuleSelect" onchange="loadSelectedModule()">
+                    <option value="default">Workflow Automation Fundamentals</option>
+                </select>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+            </div>
+            
+            <div class="text-display" id="textDisplay">
+                Click "Start Practice" to begin shadowing...
+            </div>
+            
+            <div style="text-align: center; margin-bottom: 20px;">
+                <div style="display: inline-block; background: #f8f9fa; padding: 15px 30px; border-radius: 10px;">
+                    <strong>Segment:</strong> <span id="currentSegment">0</span> / <span id="totalSegmentsDisplay">6</span>
+                </div>
+            </div>
+            
+            <div class="audio-recording-section" id="recordingSection" style="display: none;">
+                <h4 style="color: #856404; margin-bottom: 15px;">🎤 Record Your Version</h4>
+                <div class="audio-controls">
+                    <button class="btn-danger" id="recordBtn">🔴 Start Recording</button>
+                    <button class="btn-primary" id="stopRecordBtn" style="display: none;" disabled>⏹️ Stop Recording</button>
+                </div>
+                <div id="recordingIndicator" style="display: none;" class="recording-indicator">
+                    <span class="pulse"></span>
+                    <span>Recording...</span>
+                </div>
+                <div id="audioPlayback" style="display: none; margin-top: 15px;">
+                    <audio id="userAudio" controls style="width: 100%;"></audio>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <button class="btn-primary" id="startBtn">▶ Start Practice</button>
+                <button class="btn-success" id="continueBtn" style="display:none;">Next Segment ➡</button>
+                <button class="btn-danger" id="resetBtn">🔄 Reset Progress</button>
+            </div>
+        </div>
+        
+        <!-- Pronunciation Tab -->
+        <div class="tab-content" id="pronunciation">
+            <div class="info-box info-box-blue">
+                <strong>🗣️ Pronunciation Drill</strong><br>
+                Practice individual challenging words from your modules. Click the listen button to hear correct pronunciation, then practice saying each word yourself.
+            </div>
+            
+            <div class="module-selector">
+                <label for="pronModuleSelect">Filter by Module (optional):</label>
+                <select id="pronModuleSelect" onchange="renderPronunciationGrid()">
+                    <option value="all">All Words</option>
+                </select>
+            </div>
+            
+            <div class="pronunciation-grid" id="pronunciationGrid"></div>
+        </div>
+        
+        <!-- Vocabulary Tab -->
+        <div class="tab-content" id="vocabulary">
+            <div class="info-box info-box-blue">
+                <strong>📚 Vocabulary Builder</strong><br>
+                Study key terms and concepts from your practice modules to expand your professional vocabulary.
+            </div>
+            
+            <div class="pronunciation-grid" id="vocabularyGrid"></div>
+        </div>
+        
+        <!-- Generation Practice Tab -->
+        <div class="tab-content" id="generation">
+            <div class="info-box info-box-blue">
+                <strong>💡 Generation Practice</strong><br>
+                Practice explaining concepts spontaneously without looking at prepared text. This helps you move from reproduction to true production of professional language.
+            </div>
+            
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px; border-radius: 15px; margin-bottom: 20px;">
+                <h3 style="margin-bottom: 15px;">Practice Scenario:</h3>
+                <div style="margin-bottom: 15px;">
+                    <strong style="display: block; margin-bottom: 10px;">Context:</strong>
+                    <p style="line-height: 1.7; font-size: 15px;">
+                        You're meeting with the CFO of a 150-person manufacturing company who is skeptical about technology. They've been in business for 30 years using spreadsheets and manual processes. Their average employee age is 52 and there's resistance to change. Budget is limited to forty thousand dollars and they need to see clear ROI within twelve months.
+                    </p>
+                </div>
+                <div>
+                    <strong style="display: block; margin-bottom: 10px;">Your Objectives:</strong>
+                    <ul style="margin-left: 20px; line-height: 1.7;">
+                        <li>Explain automation benefits in financial terms showing cost savings and error reduction</li>
+                        <li>Address concerns about employee resistance and training requirements</li>
+                        <li>Provide realistic timeline showing quick wins within three to four months</li>
+                        <li>Emphasize that automation enhances rather than replaces human judgment</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="info-box info-box-yellow">
+                <h4 style="margin-bottom: 10px;">💡 Practice Tips:</h4>
+                <p style="margin-bottom: 12px;"><strong>Preparation:</strong> Spend two to three minutes mentally organizing your main points before speaking.</p>
+                <p style="margin-bottom: 12px;"><strong>Recording:</strong> Use Loom or your phone's voice memo to record yourself speaking for two to three minutes without stopping. Try to address all the objectives listed above.</p>
+                <p style="margin-bottom: 12px;"><strong>Analysis:</strong> After recording, transcribe your speech using Otter.ai to analyze your speaking rate which should be between one hundred twenty and one hundred fifty words per minute, identify filler words you use frequently, and spot areas where your explanation was unclear.</p>
+                <p><strong>Reflection:</strong> Write notes about what felt challenging, what you would explain differently, and which parts of your explanation felt most natural and confident.</p>
+            </div>
+        </div>
+        
+        <!-- Content Authoring Tab -->
+        <div class="tab-content" id="author">
+            <div class="info-box info-box-green">
+                <strong>✏️ Create Your Own Practice Content</strong><br>
+                Add custom content for your specific professional needs. Paste text from presentations, documentation, or explanations you've written. The system will automatically segment it into practice-sized chunks and identify challenging words for pronunciation drill.
+            </div>
+            
+            <div class="authoring-section">
+                <h3>Step 1: Enter Your Content</h3>
+                <p style="color: #666; margin-bottom: 15px; line-height: 1.6;">Paste content from your professional materials such as presentations, client explanations, or technical documentation. The content should represent language you'll actually need to use in professional contexts.</p>
+                
+                <div class="form-group">
+                    <label class="form-label" for="moduleName">Module Name</label>
+                    <input type="text" id="moduleName" class="form-input" placeholder="e.g., Oracle Inventory Management, Client Objection Handling, ROI Explanations">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="moduleContent">Content Text</label>
+                    <textarea id="moduleContent" class="form-textarea" placeholder="Paste or type your content here. This could be from documentation, presentations, articles, or explanations you've written. The system will break it into practice segments automatically."></textarea>
+                </div>
+                
+                <button class="btn-primary" onclick="processContent()">🔄 Process & Preview</button>
+            </div>
+            
+            <div class="authoring-section" id="previewSection" style="display: none;">
+                <h3>Step 2: Review Segments</h3>
+                <p style="color: #666; margin-bottom: 15px;">Below is how your content has been segmented for practice. Each segment should be one to three sentences that form a complete thought. If you're not satisfied with the segmentation, go back to Step 1, adjust the content, and process it again.</p>
+                <div class="segment-preview" id="segmentPreview"></div>
+            </div>
+            
+            <div class="authoring-section" id="wordsSection" style="display: none;">
+                <h3>Step 3: Select Pronunciation Words</h3>
+                <p style="color: #666; margin-bottom: 15px;">These words were identified as potentially challenging based on syllable count, consonant clusters, and complexity. Select the ones you want to add to pronunciation practice. You don't need to select all of them, just focus on words that are genuinely challenging for you personally.</p>
+                <div class="word-list" id="wordList"></div>
+                
+                <div style="margin-top: 25px;">
+                    <button class="btn-success" onclick="saveModule()">💾 Save Module</button>
+                    <button class="btn-danger" onclick="cancelAuthoring()">❌ Cancel</button>
+                </div>
+            </div>
+            
+            <div class="success-message" id="successMessage">
+                ✅ Module saved successfully! Your pronunciation words have been added to the Pronunciation tab. You can now find this module in the Shadowing tab dropdown selector.
+            </div>
+        </div>
+        
+        <!-- Progress Tab -->
+        <div class="tab-content" id="progress">
+            <div class="info-box info-box-blue">
+                <strong>📊 Your Progress</strong><br>
+                Track your practice across all modules and activities. Consistent practice over time leads to meaningful improvement in communication skills.
+            </div>
+            
+            <div style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                <h3 style="color: #667eea; margin-bottom: 15px;">Practice Summary</h3>
+                <p style="color: #666; margin-bottom: 10px; line-height: 1.6;">
+                    <strong>Total Sessions:</strong> <span id="progressSessions">0</span> - This counts each time you complete a practice activity such as finishing a shadowing module, completing pronunciation drills, or doing generation practice.
+                </p>
+                <p style="color: #666; margin-bottom: 10px; line-height: 1.6;">
+                    <strong>Total Practice Time:</strong> <span id="progressMinutes">0</span> minutes - Time invested directly correlates with skill improvement. Aim for at least fifteen to twenty minutes per day for meaningful progress.
+                </p>
+                <p style="color: #666; line-height: 1.6;">
+                    <strong>Modules Created:</strong> <span id="progressModules">1</span> - Building a diverse library of practice modules ensures you're developing fluency across all the communication contexts you'll encounter professionally.
+                </p>
+            </div>
+            
+            <div class="info-box info-box-green">
+                <h4 style="margin-bottom: 10px;">💡 Understanding Your Progress:</h4>
+                <p style="margin-bottom: 10px;">Professional communication fluency typically requires three to six months of consistent practice to show substantial improvement. The most important metric is not how many total sessions you've completed, but rather whether you're practicing consistently several times per week.</p>
+                <p>Look for patterns in your practice such as which days you tend to practice, which modules you return to frequently, and which types of practice you find most valuable. These patterns will help you optimize your practice routine for maximum effectiveness.</p>
+            </div>
+        </div>
+        
+        <!-- Weekly Guide Tab -->
+        <div class="tab-content" id="guide">
+            <div class="info-box info-box-green">
+                <strong>📅 Your Weekly Practice Structure</strong><br>
+                Follow this proven routine to systematically improve all aspects of your communication. Consistency matters more than perfection, so aim to follow this structure most weeks rather than trying to execute it perfectly every single week.
+            </div>
+            
+            <div style="background: #f8f9fa; padding: 25px; border-radius: 15px; margin-bottom: 20px;">
+                <h3 style="color: #667eea; margin-bottom: 15px;">Recommended Weekly Schedule</h3>
+                
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color: #667eea; margin-bottom: 10px;">Monday: Foundation Building</h4>
+                    <p style="line-height: 1.7; color: #333;">
+                        Begin the week with pronunciation drill for fifteen minutes focusing on words that challenge you most. Follow this with twenty minutes of shadowing practice including recording yourself and comparing your pronunciation to the model. This combination activates your awareness of pronunciation patterns and sets the tone for focused practice throughout the week.
+                    </p>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color: #667eea; margin-bottom: 10px;">Tuesday: Continued Practice and Refinement</h4>
+                    <p style="line-height: 1.7; color: #333;">
+                        Continue shadowing practice for twenty-five minutes, working through new segments or repeating challenging segments from Monday. Spend ten minutes reviewing vocabulary terms to reinforce your understanding of key professional concepts. This day emphasizes volume of practice to build momentum.
+                    </p>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color: #667eea; margin-bottom: 10px;">Wednesday: Vocabulary and Targeted Drilling</h4>
+                    <p style="line-height: 1.7; color: #333;">
+                        Dedicate twenty minutes to intensive vocabulary study, focusing on synonyms and alternative phrasings that will make your professional communication more sophisticated. Spend fifteen minutes on pronunciation drill targeting specific weak areas you've identified in your practice this week. This mid-week session ensures you're addressing knowledge gaps alongside skill practice.
+                    </p>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color: #667eea; margin-bottom: 10px;">Thursday: Generation and Production Practice</h4>
+                    <p style="line-height: 1.7; color: #333;">
+                        Spend thirty minutes on generation practice where you explain concepts spontaneously without referring to prepared text. Record yourself and write reflection notes about what felt challenging and what you would do differently. This day shifts from reproduction in shadowing to genuine production, which is essential for developing real-world communication competence.
+                    </p>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color: #667eea; margin-bottom: 10px;">Friday: Review and Planning</h4>
+                    <p style="line-height: 1.7; color: #333;">
+                        Review the week's progress for fifteen minutes, looking at what practice patterns worked well and what needs adjustment. Spend twenty minutes creating a new content module for upcoming professional needs, whether that's preparing for a specific presentation or building practice material around concepts you'll need to explain soon. This day combines reflection with forward planning, setting you up for success in the following week.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="info-box info-box-blue">
+                <h4 style="margin-bottom: 10px;">🎯 Progressive Confidence Building</h4>
+                <p style="margin-bottom: 10px;"><strong>Weeks 1-2:</strong> Practice completely alone with recording and self-assessment. Focus exclusively on pronunciation accuracy and becoming familiar with the content without any performance pressure.</p>
+                <p style="margin-bottom: 10px;"><strong>Weeks 3-4:</strong> Record yourself on video using Loom so you can see your body language and facial expressions alongside hearing your voice. This adds a visual dimension to your self-awareness without yet involving others.</p>
+                <p style="margin-bottom: 10px;"><strong>Weeks 5-6:</strong> Share one or two recordings with a trusted friend or colleague for feedback. Choose someone who will be encouraging while also providing honest observations about clarity and professionalism.</p>
+                <p style="margin-bottom: 10px;"><strong>Weeks 7-8:</strong> Present live to a small supportive group via video call, comparing how live performance feels different from recorded practice. Notice where anxiety affects your fluency and make notes about what helps you stay calm.</p>
+                <p><strong>Weeks 9 and beyond:</strong> Apply your skills in actual professional contexts such as client meetings, team presentations, or business development calls. Reflect after each real-world application to identify what transferred well from practice and what needs continued work.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== CORE DATA STRUCTURES ====================
+        
+        // Default practice module with foundational workflow automation content
+        const defaultModule = {
+            id: 'default',
+            name: 'Workflow Automation Fundamentals',
+            created: new Date().toISOString(),
+            segments: [
+                "Let's begin with the most fundamental questions first, because before we dive into the technical aspects of workflow automation, we need to establish a clear understanding of why automation matters in the first place and what specific problems it solves for businesses.",
+                "The utility of automation is perhaps the first thing we need to address comprehensively, because understanding the core value proposition will help you explain to your clients exactly why they should invest time, resources, and capital into implementing automated workflows.",
+                "One of the most significant benefits of implementing automation is that it dramatically reduces avoidable human errors, those costly mistakes that occur when people are performing repetitive tasks hour after hour and their attention naturally begins to waver.",
+                "Another tremendously important benefit that automation brings to organizations is that things get done significantly faster, which means that tasks that might have taken hours or days to complete manually can now be finished in minutes or seconds.",
+                "When you automate repetitive, low-value tasks, you free up valuable human time and cognitive capacity so that your talented team members can redirect their creativity, problem-solving abilities, and strategic thinking toward much higher-value work.",
+                "This transformational approach to business operations creates lasting competitive advantages through improved efficiency, reduced costs, enhanced employee satisfaction, and greater ability to respond quickly to customer needs and market opportunities."
+            ]
+        };
+        
+        // Default pronunciation words for practice
+        const defaultPronunciationWords = [
+            { word: "automation", tip: "Four syllables with stress on MAY: aw-tuh-MAY-shun", moduleId: "default" },
+            { word: "utility", tip: "Four syllables with stress on TIL: yoo-TIL-i-tee", moduleId: "default" },
+            { word: "efficiency", tip: "Four syllables with stress on FISH: ih-FISH-en-see", moduleId: "default" },
+            { word: "systematic", tip: "Four syllables with stress on MAT: sis-tuh-MAT-ik", moduleId: "default" },
+            { word: "processes", tip: "Plural ending is 'iz' not 'eez': PRAH-ses-iz", moduleId: "default" },
+            { word: "cognitive", tip: "Hard 'g' sound, stress on KOG: KOG-ni-tiv", moduleId: "default" },
+            { word: "technology", tip: "Stress on NAH syllable: tek-NAH-luh-jee", moduleId: "default" },
+            { word: "workflows", tip: "Two words combined with equal stress", moduleId: "default" },
+            { word: "implementation", tip: "Five syllables, stress on TAY: im-pluh-men-TAY-shun", moduleId: "default" },
+            { word: "intelligence", tip: "Soft 'g' becomes 'j' sound: in-TEL-i-jens", moduleId: "default" },
+            { word: "capabilities", tip: "Five syllables, stress on BIL: kay-puh-BIL-i-teez", moduleId: "default" },
+            { word: "comprehensive", tip: "Four syllables, stress on HEN: kom-prih-HEN-siv", moduleId: "default" }
+        ];
+        
+        // Vocabulary terms for study
+        const vocabularyTerms = [
+            { 
+                term: "Workflow Automation", 
+                definition: "The use of technology to automate complex business processes and functions beyond just individual tasks, coordinating work across multiple systems and people to achieve business outcomes more efficiently."
+            },
+            { 
+                term: "Business Process", 
+                definition: "A series of structured steps performed by people or systems to achieve a specific business outcome such as processing customer orders, managing inventory, or handling employee onboarding."
+            },
+            { 
+                term: "Cognitive Capacity", 
+                definition: "The mental resources available for thinking, learning, problem-solving, and decision-making. When routine tasks are automated, this capacity is freed up for higher-value creative and strategic work."
+            }
+        ];
+        
+        // Application state management
+        let allModules = [];
+        let currentModule = null;
+        let currentSegmentIndex = 0;
+        let allPronunciationWords = [];
+        let totalSessions = 0;
+        let totalMinutes = 0;
+        let tempModule = { segments: [], words: [], selectedWords: [] };
+        
+        // Audio recording state
+        let mediaRecorder = null;
+        let audioChunks = [];
+        let userAudioBlob = null;
+        
+        // Text-to-speech synthesis
+        const synth = window.speechSynthesis;
+        
+        // ==================== INITIALIZATION ====================
+        
+        function init() {
+            // Load all data from browser local storage
+            loadDataFromStorage();
+            
+            // Update all UI elements with current data
+            updateAllStats();
+            updateAllSelectors();
+            renderPronunciationGrid();
+            renderVocabularyGrid();
+            updateDailyRecommendations();
+            
+            // Set up event listeners for tab navigation
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+            });
+            
+            // Set up event listeners for practice controls
+            document.getElementById('startBtn').addEventListener('click', startPractice);
+            document.getElementById('continueBtn').addEventListener('click', continueToNext);
+            document.getElementById('resetBtn').addEventListener('click', resetProgress);
+            
+            // Set up event listeners for audio recording
+            document.getElementById('recordBtn').addEventListener('click', startRecording);
+            document.getElementById('stopRecordBtn').addEventListener('click', stopRecording);
+        }
+        
+        function loadDataFromStorage() {
+            // Load modules from local storage or use default
+            const storedModules = localStorage.getItem('completeModules_v5');
+            if (storedModules) {
+                try {
+                    allModules = JSON.parse(storedModules);
+                } catch (e) {
+                    console.error('Error parsing stored modules:', e);
+                    allModules = [];
+                }
+            }
+            
+            // Ensure default module always exists
+            if (!allModules.find(m => m.id === 'default')) {
+                allModules.unshift(defaultModule);
+            }
+            
+            // Load pronunciation words from local storage or use defaults
+            const storedWords = localStorage.getItem('allWords_v5');
+            if (storedWords) {
+                try {
+                    allPronunciationWords = JSON.parse(storedWords);
+                } catch (e) {
+                    console.error('Error parsing stored words:', e);
+                    allPronunciationWords = [...defaultPronunciationWords];
+                }
+            } else {
+                allPronunciationWords = [...defaultPronunciationWords];
+            }
+            
+            // Set current module to first available module
+            currentModule = allModules[0];
+            
+            // Load practice statistics
+            totalSessions = parseInt(localStorage.getItem('totalSessions_v5') || '0');
+            totalMinutes = parseInt(localStorage.getItem('totalMinutes_v5') || '0');
+        }
+        
+        function saveDataToStorage() {
+            // Save all modules to local storage
+            localStorage.setItem('completeModules_v5', JSON.stringify(allModules));
+            
+            // Save all pronunciation words to local storage
+            localStorage.setItem('allWords_v5', JSON.stringify(allPronunciationWords));
+            
+            // Update all UI elements to reflect changes
+            updateAllStats();
+            updateAllSelectors();
+        }
+        
+        function updateAllStats() {
+            // Update statistics dashboard at top of page
+            document.getElementById('totalModules').textContent = allModules.length;
+            document.getElementById('totalWords').textContent = allPronunciationWords.length;
+            document.getElementById('totalSessions').textContent = totalSessions;
+            document.getElementById('totalMinutes').textContent = totalMinutes;
+            
+            // Update statistics in progress tab
+            document.getElementById('progressSessions').textContent = totalSessions;
+            document.getElementById('progressMinutes').textContent = totalMinutes;
+            document.getElementById('progressModules').textContent = allModules.length;
+        }
+        
+        function updateAllSelectors() {
+            // Update module selector in shadowing tab
+            const shadowSelect = document.getElementById('shadowModuleSelect');
+            shadowSelect.innerHTML = '';
+            
+            // Update module filter in pronunciation tab
+            const pronSelect = document.getElementById('pronModuleSelect');
+            pronSelect.innerHTML = '<option value="all">All Words</option>';
+            
+            // Populate both selectors with all available modules
+            allModules.forEach(module => {
+                const option1 = document.createElement('option');
+                option1.value = module.id;
+                option1.textContent = module.name;
+                shadowSelect.appendChild(option1);
+                
+                const option2 = document.createElement('option');
+                option2.value = module.id;
+                option2.textContent = module.name;
+                pronSelect.appendChild(option2);
+            });
+        }
+        
+        function updateDailyRecommendations() {
+            const list = document.getElementById('dailyRecommendations');
+            const recommendations = [
+                `Practice pronunciation words from your ${allModules.length} module${allModules.length > 1 ? 's' : ''}`,
+                `Continue shadowing practice - you have ${allModules.length} module${allModules.length > 1 ? 's' : ''} available`,
+                `Try generation practice to apply your skills spontaneously without prepared text`,
+                `Consider creating a new content module for upcoming professional needs or presentations`
+            ];
+            
+            list.innerHTML = recommendations.map(r => `<li>${r}</li>`).join('');
+        }
+        
+        // ==================== TAB NAVIGATION ====================
+        
+        function switchTab(tabName) {
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.tab === tabName) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Hide all tab content sections
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Show the selected tab content
+            document.getElementById(tabName).classList.add('active');
+        }
+        
+        // ==================== SHADOWING PRACTICE ====================
+        
+        function loadSelectedModule() {
+            // Get selected module from dropdown
+            const select = document.getElementById('shadowModuleSelect');
+            const module = allModules.find(m => m.id === select.value);
+            
+            if (module) {
+                // Update current module and reset progress
+                currentModule = module;
+                currentSegmentIndex = 0;
+                
+                // Update UI to show new module information
+                document.getElementById('totalSegmentsDisplay').textContent = module.segments.length;
+                document.getElementById('textDisplay').textContent = 'Click "Start Practice" to begin shadowing...';
+                updateProgress();
+            }
+        }
+        
+        async function startPractice() {
+            // Check if we've completed all segments
+            if (currentSegmentIndex >= currentModule.segments.length) {
+                alert('🎉 Completed all segments! Reset to practice again or switch to a different module.');
+                return;
+            }
+            
+            // Hide start button and show current segment
+            document.getElementById('startBtn').style.display = 'none';
+            document.getElementById('recordingSection').style.display = 'none';
+            
+            // Display the current segment text
+            displaySegment(currentSegmentIndex);
+            
+            // Speak the segment using text-to-speech
+            await speakSegment(currentModule.segments[currentSegmentIndex]);
+            
+            // Show recording section after speech completes
+            document.getElementById('recordingSection').style.display = 'block';
+        }
+        
+        function displaySegment(index) {
+            // Show the segment text on screen
+            document.getElementById('textDisplay').textContent = currentModule.segments[index];
+            document.getElementById('currentSegment').textContent = index + 1;
+            updateProgress();
+        }
+        
+        function speakSegment(text) {
+            // Use text-to-speech to read the segment aloud
+            return new Promise((resolve) => {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 0.85; // Slightly slower than normal for clarity
+                utterance.pitch = 1.0; // Normal pitch
+                utterance.volume = 1.0; // Full volume
+                utterance.onend = () => resolve(); // Resolve promise when speech ends
+                synth.speak(utterance);
+            });
+        }
+        
+        function updateProgress() {
+            // Calculate and display progress through current module
+            const progress = ((currentSegmentIndex + 1) / currentModule.segments.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+        
+        function continueToNext() {
+            // Move to next segment
+            currentSegmentIndex++;
+            document.getElementById('continueBtn').style.display = 'none';
+            
+            // Check if module is complete
+            if (currentSegmentIndex >= currentModule.segments.length) {
+                alert('🎉 Excellent work! You completed this module. You can reset to practice again or switch to a different module.');
+                document.getElementById('startBtn').style.display = 'inline-block';
+                document.getElementById('startBtn').textContent = '▶ Start Practice';
+                document.getElementById('recordingSection').style.display = 'none';
+                document.getElementById('textDisplay').textContent = 'Module complete! Reset to practice again or select a different module.';
+                
+                // Track this session in statistics
+                totalSessions++;
+                totalMinutes += 15; // Estimate 15 minutes per module completion
+                localStorage.setItem('totalSessions_v5', totalSessions.toString());
+                localStorage.setItem('totalMinutes_v5', totalMinutes.toString());
+                updateAllStats();
+                return;
+            }
+            
+            // Continue to next segment
+            startPractice();
+        }
+        
+        function resetProgress() {
+            if (confirm('Reset progress and start from the beginning of this module?')) {
+                // Cancel any ongoing speech
+                synth.cancel();
+                
+                // Reset to first segment
+                currentSegmentIndex = 0;
+                
+                // Reset UI state
+                document.getElementById('startBtn').style.display = 'inline-block';
+                document.getElementById('startBtn').textContent = '▶ Start Practice';
+                document.getElementById('continueBtn').style.display = 'none';
+                document.getElementById('recordingSection').style.display = 'none';
+                document.getElementById('textDisplay').textContent = 'Click "Start Practice" to begin shadowing...';
+                updateProgress();
+            }
+        }
+        
+        // ==================== AUDIO RECORDING ====================
+        
+        async function startRecording() {
+            try {
+                // Request microphone access
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                audioChunks = [];
+                
+                // Create media recorder
+                mediaRecorder = new MediaRecorder(stream);
+                
+                // Collect audio data as it's recorded
+                mediaRecorder.ondataavailable = (event) => {
+                    audioChunks.push(event.data);
+                };
+                
+                // Handle recording completion
+                mediaRecorder.onstop = () => {
+                    // Create audio blob from recorded chunks
+                    userAudioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    const audioUrl = URL.createObjectURL(userAudioBlob);
+                    
+                    // Display audio player with recording
+                    const userAudioEl = document.getElementById('userAudio');
+                    userAudioEl.src = audioUrl;
+                    document.getElementById('audioPlayback').style.display = 'block';
+                    
+                    // Show continue button to move to next segment
+                    document.getElementById('continueBtn').style.display = 'inline-block';
+                    
+                    // Stop microphone stream
+                    stream.getTracks().forEach(track => track.stop());
+                };
+                
+                // Start recording
+                mediaRecorder.start();
+                
+                // Update UI to show recording state
+                document.getElementById('recordBtn').style.display = 'none';
+                document.getElementById('stopRecordBtn').style.display = 'inline-block';
+                document.getElementById('stopRecordBtn').disabled = false;
+                document.getElementById('recordingIndicator').style.display = 'flex';
+                
+            } catch (error) {
+                alert('Could not access microphone. Please ensure microphone permissions are granted in your browser settings.');
+                console.error('Error accessing microphone:', error);
+            }
+        }
+        
+        function stopRecording() {
+            // Stop the recording if it's active
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+                
+                // Update UI to show recording stopped
+                document.getElementById('stopRecordBtn').style.display = 'none';
+                document.getElementById('recordBtn').style.display = 'inline-block';
+                document.getElementById('recordingIndicator').style.display = 'none';
+            }
+        }
+        
+        // ==================== PRONUNCIATION PRACTICE ====================
+        
+        function renderPronunciationGrid() {
+            const container = document.getElementById('pronunciationGrid');
+            const filter = document.getElementById('pronModuleSelect').value;
+            
+            // Filter words based on selected module
+            let wordsToShow = allPronunciationWords;
+            if (filter !== 'all') {
+                wordsToShow = allPronunciationWords.filter(w => w.moduleId === filter);
+            }
+            
+            // Render pronunciation cards
+            container.innerHTML = wordsToShow.map(word => `
+                <div class="pronunciation-card">
+                    <div class="pronunciation-word">${word.word}</div>
+                    <div class="pronunciation-tip">${word.tip}</div>
+                    <button class="btn-primary btn-small" onclick="speakWord('${word.word}')">🔊 Listen</button>
+                </div>
+            `).join('');
+        }
+        
+        function speakWord(word) {
+            // Use text-to-speech to pronounce individual word
+            const utterance = new SpeechSynthesisUtterance(word);
+            utterance.rate = 0.7; // Slower rate for individual word pronunciation
+            synth.speak(utterance);
+        }
+        
+        // ==================== VOCABULARY PRACTICE ====================
+        
+        function renderVocabularyGrid() {
+            const container = document.getElementById('vocabularyGrid');
+            
+            // Render vocabulary term cards
+            container.innerHTML = vocabularyTerms.map(term => `
+                <div class="pronunciation-card">
+                    <div class="pronunciation-word">${term.term}</div>
+                    <div class="pronunciation-tip">${term.definition}</div>
+                </div>
+            `).join('');
+        }
+        
+        // ==================== CONTENT AUTHORING ====================
+        
+        function processContent() {
+            // Get input values
+            const name = document.getElementById('moduleName').value.trim();
+            const content = document.getElementById('moduleContent').value.trim();
+            
+            // Validate inputs
+            if (!name) {
+                alert('Please enter a module name before processing.');
+                return;
+            }
+            
+            if (!content) {
+                alert('Please enter some content to process.');
+                return;
+            }
+            
+            // Segment the content into practice-sized chunks
+            const segments = segmentText(content);
+            
+            // Identify challenging pronunciation words
+            const words = identifyPronunciationWords(content);
+            
+            // Store in temporary module object
+            tempModule = {
+                name: name,
+                segments: segments,
+                words: words,
+                selectedWords: []
+            };
+            
+            // Display preview and word selection
+            displaySegmentPreview(segments);
+            displayWordSelection(words);
+            
+            // Show preview sections
+            document.getElementById('previewSection').style.display = 'block';
+            document.getElementById('wordsSection').style.display = 'block';
+            
+            // Scroll to preview
+            document.getElementById('previewSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        
+        function segmentText(text) {
+            // Clean up whitespace
+            text = text.replace(/\s+/g, ' ').trim();
+            
+            // Split into sentences
+            const sentenceRegex = /[^.!?]+[.!?]+/g;
+            const sentences = text.match(sentenceRegex) || [text];
+            
+            const segments = [];
+            let current = '';
+            
+            // Group sentences into appropriately-sized segments
+            for (const sentence of sentences) {
+                const combined = (current + ' ' + sentence).trim();
+                const wordCount = combined.split(/\s+/).length;
+                
+                // If combining would exceed 60 words, save current and start new
+                if (wordCount > 60 && current) {
+                    segments.push(current.trim());
+                    current = sentence;
+                } else {
+                    current = combined;
+                }
+            }
+            
+            // Add final segment
+            if (current) {
+                segments.push(current.trim());
+            }
+            
+            return segments;
+        }
+        
+        function identifyPronunciationWords(text) {
+            // Extract all unique words
+            const words = text.toLowerCase()
+                .replace(/[.,!?;:()]/g, '')
+                .split(/\s+/)
+                .filter(word => word.length > 0);
+            
+            const uniqueWords = [...new Set(words)];
+            
+            // Filter for challenging words based on multiple criteria
+            const challenging = uniqueWords.filter(word => {
+                // Count vowel groups as rough syllable estimate
+                const vowelGroups = word.match(/[aeiouy]+/gi);
+                const syllables = vowelGroups ? vowelGroups.length : 0;
+                
+                // Include words with 3+ syllables
+                if (syllables >= 3) return true;
+                
+                // Include words with consonant clusters
+                if (/[bcdfghjklmnpqrstvwxyz]{3,}/i.test(word)) return true;
+                
+                // Include words with TH sound
+                if (/th/i.test(word)) return true;
+                
+                // Include longer words (8+ letters)
+                if (word.length >= 8) return true;
+                
+                return false;
+            });
+            
+            // Return up to 15 challenging words
+            return challenging.slice(0, 15);
+        }
+        
+        function displaySegmentPreview(segments) {
+            const container = document.getElementById('segmentPreview');
+            
+            // Render segment preview cards
+            container.innerHTML = segments.map((seg, i) => `
+                <div class="segment-item">
+                    <span class="segment-number">Segment ${i + 1}</span>
+                    <div>${seg}</div>
+                </div>
+            `).join('');
+        }
+        
+        function displayWordSelection(words) {
+            const container = document.getElementById('wordList');
+            
+            // Handle case where no challenging words found
+            if (words.length === 0) {
+                container.innerHTML = '<p style="color: #666;">No challenging words identified automatically. You can still save this module for shadowing practice.</p>';
+                return;
+            }
+            
+            // Render word selection chips
+            container.innerHTML = words.map(word => `
+                <label class="word-chip">
+                    <input type="checkbox" value="${word}" onchange="toggleWordSelection('${word}', this.checked)">
+                    ${word}
+                </label>
+            `).join('');
+        }
+        
+        function toggleWordSelection(word, selected) {
+            // Add or remove word from selected list
+            if (selected) {
+                if (!tempModule.selectedWords.includes(word)) {
+                    tempModule.selectedWords.push(word);
+                }
+            } else {
+                tempModule.selectedWords = tempModule.selectedWords.filter(w => w !== word);
+            }
+        }
+        
+        function saveModule() {
+            // Validate we have module data to save
+            if (!tempModule.name || tempModule.segments.length === 0) {
+                alert('Cannot save module: missing required data. Please process content first.');
+                return;
+            }
+            
+            // Create new module object
+            const newModule = {
+                id: 'module_' + Date.now(),
+                name: tempModule.name,
+                created: new Date().toISOString(),
+                segments: tempModule.segments
+            };
+            
+            // Add module to collection
+            allModules.push(newModule);
+            
+            // Add selected words to pronunciation collection
+            tempModule.selectedWords.forEach(word => {
+                allPronunciationWords.push({
+                    word: word,
+                    tip: 'Practice this word for better pronunciation clarity',
+                    moduleId: newModule.id
+                });
+            });
+            
+            // Save to local storage
+            saveDataToStorage();
+            
+            // Update pronunciation grid with new words
+            renderPronunciationGrid();
+            
+            // Update recommendations
+            updateDailyRecommendations();
+            
+            // Show success message
+            const successMsg = document.getElementById('successMessage');
+            successMsg.classList.add('show');
+            setTimeout(() => successMsg.classList.remove('show'), 5000);
+            
+            // Clear form
+            document.getElementById('moduleName').value = '';
+            document.getElementById('moduleContent').value = '';
+            document.getElementById('previewSection').style.display = 'none';
+            document.getElementById('wordsSection').style.display = 'none';
+            
+            // Reset temporary module
+            tempModule = { segments: [], words: [], selectedWords: [] };
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        function cancelAuthoring() {
+            if (confirm('Discard this module and clear the form?')) {
+                // Clear all form fields
+                document.getElementById('moduleName').value = '';
+                document.getElementById('moduleContent').value = '';
+                
+                // Hide preview sections
+                document.getElementById('previewSection').style.display = 'none';
+                document.getElementById('wordsSection').style.display = 'none';
+                
+                // Reset temporary module
+                tempModule = { segments: [], words: [], selectedWords: [] };
+            }
+        }
+        
+        // ==================== APPLICATION STARTUP ====================
+        
+        // Initialize the application when page loads
+        init();
+    </script>
+</body>
+</html>
